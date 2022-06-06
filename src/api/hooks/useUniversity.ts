@@ -7,13 +7,17 @@ interface Params {
   slug: string;
 }
 
-interface Context extends Params {
-  id: string;
-}
+export const universityKey = (params: Params) =>
+  [
+    {
+      id: "universities",
+      ...params,
+    },
+  ] as const;
 
 export const fetchUniversity = async ({
   queryKey: [{ slug }],
-}: QueryFunctionContext<Context[]>) => {
+}: QueryFunctionContext<ReturnType<typeof universityKey>>) => {
   const response: UniversityAPI = await fetcher(`/v2/universities/${slug}`);
 
   return normalizeUniversity(response);
@@ -21,11 +25,6 @@ export const fetchUniversity = async ({
 
 export const useUniversity = ({ slug }: Params) =>
   useQuery({
-    queryKey: [
-      {
-        id: "university",
-        slug,
-      } as Context,
-    ],
+    queryKey: universityKey({ slug }),
     queryFn: fetchUniversity,
   });
