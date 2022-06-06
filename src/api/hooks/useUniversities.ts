@@ -13,14 +13,26 @@ interface Params {
   pagination?: Pagination;
 }
 
-interface Context extends Params {
-  id: string;
-}
+const defaultParams = (params: Params) => ({
+  pagination: {
+    page: params.pagination?.page || 0,
+    pageSize: params.pagination?.pageSize || 20,
+    withCount: params.pagination?.withCount || true,
+  },
+});
+
+export const universitiesKey = (params: Params) =>
+  [
+    {
+      id: "universities",
+      ...defaultParams(params),
+    },
+  ] as const;
 
 export const fetchUniversities = async ({
   queryKey: [{ pagination }],
   pageParam,
-}: QueryFunctionContext<Context[]>) => {
+}: QueryFunctionContext<ReturnType<typeof universitiesKey>>) => {
   const query = stringify({
     pagination: {
       ...pagination,
@@ -38,18 +50,9 @@ export const fetchUniversities = async ({
   };
 };
 
-export const useInfiniteUniversities = ({ pagination }: Params) =>
+export const useInfiniteUniversities = (params: Params) =>
   useInfiniteQuery({
-    queryKey: [
-      {
-        id: "universities",
-        pagination: {
-          page: pagination?.page || 0,
-          pageSize: pagination?.pageSize || 20,
-          withCount: pagination?.withCount || true,
-        },
-      } as Context,
-    ],
+    queryKey: universitiesKey(params),
     queryFn: fetchUniversities,
     getNextPageParam,
   });

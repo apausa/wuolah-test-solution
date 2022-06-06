@@ -1,49 +1,37 @@
-import { useMemo } from "react";
-import NextLink from "next/link";
-import { Virtuoso } from "react-virtuoso";
+import { GetStaticProps } from "next";
+import Head from "next/head";
+import { dehydrate, QueryClient } from "react-query";
 
-import { useInfiniteUniversities } from "api/hooks/useUniversities";
+import { fetchUniversities, universitiesKey } from "api/hooks/useUniversities";
 
-import { Heading, Link, Spinner, Text } from "@chakra-ui/react";
+import Univeristies from "containers/Universities";
 
-const Page = () => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useInfiniteUniversities({});
+export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient();
 
-  const items = useMemo(
-    () =>
-      data
-        ? data.pages.flatMap(({ data }) => data.map((university) => university))
-        : [],
-    [data]
+  await queryClient.prefetchInfiniteQuery(
+    universitiesKey({}),
+    fetchUniversities
   );
 
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+    revalidate: 20,
+  };
+};
+
+const Page = () => {
   return (
     <>
-      <Heading as="h1">Universidades</Heading>
-      <Virtuoso
-        data={items}
-        useWindowScroll
-        endReached={() => fetchNextPage()}
-        overscan={20}
-        itemContent={(index, university) => {
-          return (
-            <NextLink
-              key={university.id}
-              href={`/universidades/${university.slug}`}
-            >
-              <Link>{university.name}</Link>
-            </NextLink>
-          );
-        }}
-        components={{
-          Footer: () => {
-            if (!hasNextPage) return <Text>No hay más resultados</Text>;
-            if (isFetchingNextPage) return <Spinner />;
-            return null;
-          },
-        }}
-      />
+      <Head>
+        <title>
+          Listado de Universidades | Encuentra los apuntes de tus compañeros
+          ahora
+        </title>
+      </Head>
+      <Univeristies />
     </>
   );
 };
