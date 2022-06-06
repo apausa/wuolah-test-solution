@@ -1,5 +1,11 @@
+import { Heading } from "@chakra-ui/react";
+
 const Page = () => {
-  return <div>Universidades</div>;
+  return (
+    <div>
+      <Heading as="h1">Universidades</Heading>
+    </div>
+  );
 };
 
 export default Page;
