@@ -1,7 +1,7 @@
 import { QueryFunctionContext, useQuery } from "react-query";
 
 import { fetcher } from "api/fetcher";
-import { normalizeUniversity, UniversityAPI } from "model/university";
+import { normalizeUniversity, UniversityAPI } from "model/University";
 
 interface Params {
   slug: string;
