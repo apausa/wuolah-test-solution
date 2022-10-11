@@ -23,7 +23,6 @@ const Univeristies = () => {
       <Heading as="h1">Universidades</Heading>
       <Virtuoso
         data={items}
-        useWindowScroll
         endReached={() => fetchNextPage()}
         overscan={20}
         itemContent={(index, university) => {
