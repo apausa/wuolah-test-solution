@@ -4,16 +4,7 @@ import { Virtuoso } from "react-virtuoso";
 
 import { useInfiniteUniversities } from "api/hooks/useUniversities";
 
-import {
-  Box,
-  Center,
-  Container,
-  Heading,
-  Link,
-  Spinner,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Heading, Link, Spinner, Stack, Text } from "@chakra-ui/react";
 
 const Univeristies = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
