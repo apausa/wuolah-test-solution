@@ -27,8 +27,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Listado de Universidades | Encuentra los apuntes de tus compañeros
-          ahora
+          Listado de Universidades | Encuentra los apuntes de tus compañeros ahora
         </title>
       </Head>
       <Univeristies />
