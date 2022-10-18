@@ -7,12 +7,13 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { client } from "api/client";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => client);
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <Component {...pageProps} />
